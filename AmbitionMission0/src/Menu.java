@@ -27,6 +27,7 @@ public class Menu {
 				recordToday(in, temp);
 			}
 		}
+		System.out.print("HElloooooo");
 
 	}
 
