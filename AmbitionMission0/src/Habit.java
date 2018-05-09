@@ -12,6 +12,7 @@ public class Habit {
 
 	public void changeDays(int goalDays){
 		this.goalDays= goalDays;
+		System.out.print("sdfghj");
 	}
 
 	public void recordProgress(){
