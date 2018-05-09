@@ -7,7 +7,7 @@ public class Habit {
 	public Habit(String habitName, int goalDays){
 		this.habitName = habitName;
 		this.goalDays = goalDays;
-		int i =2;
+		
 	}
 
 	public void changeDays(int goalDays){
