@@ -28,6 +28,7 @@ public class Menu {
 			}
 		}
 		System.out.print("HElloooooo");
+		int y=5;
 
 	}
 
