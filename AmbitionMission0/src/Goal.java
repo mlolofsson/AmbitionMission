@@ -1,13 +1,15 @@
+import java.util.*; 
+
 public class Goal {
 	private String goalName;
-	private int goalTime;
-	private int hourProgress = 0;
+	private double goalTime; 
+	private double hourProgress = 0;
+	private List<String> comments = new ArrayList<String>(); 
 
 
-	public Goal(String goalName, int goalTime){
+	public Goal(String goalName, double goalTime){
 		this.goalName = goalName;
 		this.goalTime = goalTime;
-		int i = 4;
 		
 	}
 
@@ -15,12 +17,19 @@ public class Goal {
 		return goalName;
 	}
 
-	public int getTime(){
+	public double getTime(){
 		return goalTime;
 	}
 
-	public void recordProgress(){
-		hourProgress++;
+	public void setTime(double newTime) { // if user wants to change time 
+		goalTime = newTime; 
+	}
+	public void recordProgress(double progress){
+		hourProgress = hourProgress + progress;
+	}
+	
+	public void addComments(String currentComment) {
+		comments.add(currentComment); 
 	}
 
 }

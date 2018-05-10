@@ -27,8 +27,7 @@ public class Menu {
 				recordToday(in, temp);
 			}
 		}
-		System.out.print("HElloooooo");
-		int y=7;
+
 	}
 
 	public static void recordToday(Scanner in, User temp) {
@@ -66,6 +65,24 @@ public class Menu {
 			}
 			break; 
 		case 3:
+			System.out.println("Have you made progress towards your goal (" + temp.getGoal() + ")?");
+			String response = in.nextLine(); 
+			if(response.equals("Y")) {
+				System.out.println("How many hours did you complete? ");
+				double hours = in.nextDouble(); 
+				temp.getGoal().recordProgress(hours);
+				System.out.print("Any comments on your progress? (Y/N)");
+				String ans = in.nextLine(); 
+				if(ans.equals("Y")) {
+					System.out.print("Enter your comments: ");
+					String comments = in.nextLine(); 
+					temp.getGoal().addComments(comments);
+				}
+			}
+			if(response.equals("N")) {
+				System.out.println("Put more effort please!!!");
+			}
+			break; 
 		}
 
 	}
@@ -84,6 +101,8 @@ public class Menu {
 		String goalChoice = in.nextLine(); 
 		System.out.println("How many hours do you want to work on your goal?");
 		int goalTime = in.nextInt(); 
+		Goal currentGoal = new Goal(goalChoice, goalTime);
+		temp.setGoal(currentGoal);
 		
 	}
 }

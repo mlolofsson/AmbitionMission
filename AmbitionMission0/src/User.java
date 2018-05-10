@@ -4,6 +4,7 @@ public class User {
 
 	private String name;
 	private Habit currentHabit;
+	private Goal currentGoal; 
 	private ArrayList<String> mood = new ArrayList<>();
 
 	public User(String name){
@@ -28,6 +29,14 @@ public class User {
 
 	public Habit getHabit(){
 		return currentHabit; 
+	}
+	
+	public void setGoal(Goal currentGoal) {
+		this.currentGoal = currentGoal;
+	}
+	
+	public Goal getGoal() {
+		return currentGoal; 
 	}
 }
 
