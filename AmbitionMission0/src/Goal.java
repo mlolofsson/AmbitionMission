@@ -7,7 +7,7 @@ public class Goal {
 	public Goal(String goalName, int goalTime){
 		this.goalName = goalName;
 		this.goalTime = goalTime;
-		int i = 3;
+		int i = 4;
 		
 	}
 
