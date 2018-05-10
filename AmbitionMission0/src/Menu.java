@@ -28,7 +28,7 @@ public class Menu {
 			}
 		}
 		System.out.print("HElloooooo");
-
+		int y=7;
 	}
 
 	public static void recordToday(Scanner in, User temp) {
