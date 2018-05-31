@@ -12,6 +12,12 @@ public class Goal {
 		this.goalTime = goalTime;
 		
 	}
+	
+	public Goal(String goalName, double goalTime, double hourProgress) {
+		this.goalName = goalName; 
+		this.goalTime = goalTime; 
+		this.hourProgress = hourProgress; 
+	}
 
 	public String getGoal(){
 		return goalName;
@@ -30,6 +36,10 @@ public class Goal {
 	
 	public void addComments(String currentComment) {
 		comments.add(currentComment); 
+	}
+	
+	public double getProgress() {
+		return hourProgress; 
 	}
 
 }

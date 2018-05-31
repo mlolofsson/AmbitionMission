@@ -9,6 +9,12 @@ public class Habit {
 		this.goalDays = goalDays;
 		
 	}
+	
+	public Habit(String habitName, int goalDays, int completeDays) {
+		this.habitName = habitName; 
+		this.goalDays = goalDays; 
+		this.completeDays = completeDays; 
+	}
 
 	public void changeDays(int goalDays){
 		this.goalDays= goalDays;
@@ -33,6 +39,8 @@ public class Habit {
 	public int getGoalDays(){
 		return this.goalDays;
 	}
+	
+	
 
 }
 
