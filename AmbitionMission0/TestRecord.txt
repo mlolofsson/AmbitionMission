@@ -1,0 +1,8 @@
+goals
+eat pizza, 46, 8
+habits
+brush teeth, 32, 7
+moods
+:)
+:(
+:)

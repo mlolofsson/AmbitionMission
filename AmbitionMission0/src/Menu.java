@@ -21,18 +21,22 @@ public class Menu {
 		PrintWriter output = null;
 		Scanner inputOfFile = null;
 		try {
-			output = new PrintWriter(userListFile);
+			inputOfFile = new Scanner(userListFile);
 		} catch (FileNotFoundException ex) {
 			System.out.println("Cannot create " + pathname);
 			System.exit(1);
 		}
 		while (inputOfFile.hasNextLine()) { // file should contain one name followed by its record file name on each
-											// line
+			// line
 			String line = inputOfFile.nextLine();
+			//System.out.print(line);
 			int quoteIndex = line.indexOf("\"");
+			//System.out.print("\n " + quoteIndex);
 			String name = line.substring(0, quoteIndex);
-			int quoteIndex2 = line.substring(quoteIndex + 1).indexOf("\"");
-			String record = line.substring(quoteIndex + 1, quoteIndex2);
+			String restOfLine = line.substring(quoteIndex + 1); 
+			int quoteIndex2 = 1 + quoteIndex + restOfLine.indexOf("\"");
+			//System.out.print("\n" + quoteIndex2);
+			String record = restOfLine.substring(0, restOfLine.length()-1);
 			names.add(name);
 			recordFileNames.add(record);
 		}
@@ -74,15 +78,18 @@ public class Menu {
 		String date = sdf.format(new Date());
 		System.out.println(date);
 		System.out.println("Hello, what would you like to record today?");
-		System.out.println("Options: \n1.Mood\n2.Habit\n3.Goal");
-		int choice = in.nextInt();
-
+		
+		int choice = 0; 
+		do {
+			System.out.println("Options: \n1.Mood\n2.Habit\n3.Goal\n4.Quit");
+			choice = in.nextInt();
 		switch (choice) {
 		case 1:
 			System.out.print("How are you feeling today? ( :) or :| or :( )");
 			String l = in.nextLine();
 			String currentMood = in.nextLine();
 			temp.getRecord().setMood(currentMood);
+			
 			break;
 
 		case 2:
@@ -122,7 +129,11 @@ public class Menu {
 				System.out.println("Put more effort please!!!");
 			}
 			break;
+		case 4:
+			break;
 		}
+		}while(choice!=4);
+		temp.getRecord().saveToTextFile();
 
 	}
 
@@ -170,7 +181,7 @@ public class Menu {
 		PrintWriter output = null;
 		Scanner inputOfFile = null;
 		try {
-			output = new PrintWriter(recordFile);
+			inputOfFile = new Scanner(recordFile);
 		} catch (FileNotFoundException ex) {
 			System.out.println("Cannot create " + pathname);
 			System.exit(1);
@@ -182,20 +193,27 @@ public class Menu {
 		while (inputOfFile.hasNextLine()) { // file should contain one name followed by its record file name on each
 											// line
 			String line = inputOfFile.nextLine();
+			System.out.println("line = " + line);
 			if (line.equals("goals")) {
 				readGoals = true;
 			} else if (line.equals("habits")) {
+				//System.out.print("helloooo");
 				readHabits = true;
+				readGoals = false;
+				readMoods = false;
 			} else if (line.equals("moods")) {
 				readMoods = true;
+				readHabits = false;
+				readGoals = false; 
 			} else if (readGoals == true) {
+				//System.out.println("readGoals == true!");
 				int commaIndex = line.indexOf(",");
 				String goalName = line.substring(0, commaIndex);
-				int commaIndex2 = line.substring(commaIndex + 1).indexOf(","); // index of , after first ,
-				String goalTime1 = line.substring(commaIndex + 1, commaIndex2);
+				int commaIndex2 = commaIndex + 1 + line.substring(commaIndex + 1).indexOf(","); // index of , after first ,
+				String goalTime1 = line.substring(commaIndex + 2, commaIndex2);
 				double goalTime = Double.parseDouble(goalTime1);
-				int commaIndex3 = line.substring(commaIndex2 + 1).indexOf(",");
-				String progress1 = line.substring(commaIndex2 + 1, commaIndex3);
+				//int commaIndex3 = line.substring(commaIndex2 + 1).indexOf(",");
+				String progress1 = line.substring(commaIndex2 + 2);
 				double progress = Double.parseDouble(progress1);
 				// String time = line.substring(commaIndex2+1, )
 				Goal tempG = new Goal(goalName, goalTime, progress);
@@ -204,11 +222,12 @@ public class Menu {
 			} else if (readHabits == true) {
 				int commaIndex = line.indexOf(",");
 				String habitName = line.substring(0, commaIndex);
-				int commaIndex2 = line.substring(commaIndex + 1).indexOf(","); // index of , after first ,
-				String goalDays1 = line.substring(commaIndex + 1, commaIndex2);
+				int commaIndex2 = commaIndex + 1 + line.substring(commaIndex + 1).indexOf(","); // index of , after first ,
+				String goalDays1 = line.substring(commaIndex + 2, commaIndex2);
 				int goalDays = Integer.parseInt(goalDays1);
-				int commaIndex3 = line.substring(commaIndex2 + 1).indexOf(",");
-				String completedDays1 = line.substring(commaIndex2 + 1, commaIndex3);
+				//int commaIndex3 = line.substring(commaIndex2 + 1).indexOf(",");
+				//int spaceIndex = line.substring(commaIndex2).indexOf(" ");
+				String completedDays1 = line.substring(commaIndex2 + 2);
 				int completedDays = Integer.parseInt(completedDays1);
 				Habit tempH = new Habit(habitName, goalDays, completedDays);
 				habits.add(tempH);
@@ -217,10 +236,12 @@ public class Menu {
 				moods.add(mood);
 			}
 		}
+
+		Record rec = new Record(goals, habits, moods, nameOfFile);
 		
-		Record rec = new Record(goals, habits, moods);
-		
-		return rec; 
-		
+		rec.printRecord();
+
+		return rec;
+
 	}
 }

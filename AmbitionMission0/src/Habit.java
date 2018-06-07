@@ -40,6 +40,14 @@ public class Habit {
 		return this.goalDays;
 	}
 	
+	public int getCompleted() {
+		return this.completeDays;
+	}
+	public void printHabit() {
+		System.out.print("habitName = " + habitName);
+		System.out.print(" goalDays = " + goalDays);
+		System.out.print(" completeDays = " + completeDays);
+	}
 	
 
 }
