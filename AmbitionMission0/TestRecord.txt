@@ -1,8 +1,11 @@
 goals
-eat pizza, 46, 8
+eat pizza, 65.0, 10.0
 habits
-brush teeth, 32, 7
+run, 87, 8
 moods
 :)
 :(
+:)
+:)
+:)
 :)

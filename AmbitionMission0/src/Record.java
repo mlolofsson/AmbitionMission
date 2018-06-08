@@ -35,12 +35,16 @@ public class Record {
 		MList.add(dailyMood);	
 	}
 
+	public void setRecordName(String recName) {
+		recordName = recName;
+	}
 	public void changeMood(String newMood, int day){
 		MList.set(day, newMood);
 	}
 
 	public void setHabit(Habit h){
 		this.currentHabit = h;
+		HList.add(currentHabit);
 	}
 
 	public Habit getHabit(){
@@ -82,6 +86,7 @@ public class Record {
 	
 	public void setGoal(Goal currentGoal) {
 		this.currentGoal = currentGoal;
+		GList.add(currentGoal);
 	}
 	
 	public Goal getGoal() {
@@ -111,10 +116,7 @@ public class Record {
 		boolean printHabits = false; 
 		boolean printMoods = false; 
 		//System.out.print(GList.size() + " " + HList.size() + " " + MList.size());
-		while (lineIndex<(1+GList.size()+1+HList.size()+1+MList.size())) { // while things still need to be written in the file
-			if(lineIndex==4) {
-				System.out.print(printHabits);
-			}
+		while (lineIndex<=(1+GList.size()+1+HList.size()+1+MList.size())) { // while things still need to be written in the file
 			if(lineIndex==1) {
 				output.print("goals");
 				printGoals = true;
@@ -123,12 +125,11 @@ public class Record {
 			else if(lineIndex == (GList.size() + 2)) {
 				output.print("\nhabits");
 				printHabits = true; 
-				System.out.print(printHabits + " dfghj");
 				printGoals = false; 
 				printMoods = false; 
 				lineIndex++;
 			}
-			else if(lineIndex == (GList.size() + 2 + HList.size())){
+			else if(lineIndex == (GList.size() + 3 + HList.size())){
 				output.print("\nmoods");
 				printHabits = false; 
 				printGoals = false; 
@@ -142,13 +143,13 @@ public class Record {
 				}
 			}
 			else if(printHabits==true) {
-				System.out.print("entered habit loop!");
+				//System.out.print("entered habit loop!");
 				for(Habit h : HList) {
 					output.print("\n" + h.getHabitName() + ", " + h.getGoalDays() + ", " + h.getCompleted());
 					lineIndex++;
 				}
 			}
-			else if(printMoods=true) {
+			else { // if printMoods==true
 				for(String m : MList) {
 					output.print("\n" + m);
 					lineIndex++;

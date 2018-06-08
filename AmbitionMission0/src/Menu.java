@@ -29,13 +29,10 @@ public class Menu {
 		while (inputOfFile.hasNextLine()) { // file should contain one name followed by its record file name on each
 			// line
 			String line = inputOfFile.nextLine();
-			// System.out.print(line);
 			int quoteIndex = line.indexOf("\"");
-			// System.out.print("\n " + quoteIndex);
 			String name = line.substring(0, quoteIndex);
 			String restOfLine = line.substring(quoteIndex + 1);
 			int quoteIndex2 = 1 + quoteIndex + restOfLine.indexOf("\"");
-			// System.out.print("\n" + quoteIndex2);
 			String record = restOfLine.substring(0, restOfLine.length() - 1);
 			names.add(name);
 			recordFileNames.add(record);
@@ -50,10 +47,7 @@ public class Menu {
 			int indexOfUser = 0;
 			for (int t = 0; t < names.size(); t++) {
 				if (names.get(t).equals(username)) {
-					// temp = new User(username);
 					indexOfUser = t;
-					// System.out.print("found user ");
-					// username = in.nextLine();
 				}
 			}
 			String recordName = recordFileNames.get(indexOfUser);
@@ -62,17 +56,45 @@ public class Menu {
 		} else {
 			System.out.print("What is your name? ");
 			username = in.nextLine();
+			names.add(username);
+			String recName = username + "Record.txt";
+			recordFileNames.add(recName);
 			temp = new User(username);
 			setUpNewUser(in, temp);
 
 		}
-
+		saveUserList(names, recordFileNames);
 		// temp = new User(username);
 		users.add(temp);
 		recordToday(in, temp);
 
 	}
 
+	public static void saveUserList(ArrayList<String> names, ArrayList<String> recordNames) {
+		String pathname = "UserList.txt";
+		File userListFile = new File(pathname);
+		PrintWriter output = null;
+		Scanner inputOfFile = null;
+		/*try {
+			inputOfFile = new Scanner(userListFile);
+		} catch (FileNotFoundException ex) {
+			System.out.println("Cannot create " + pathname);
+			System.exit(1);
+		}*/
+		try {
+			output = new PrintWriter(userListFile);
+		}
+		catch(FileNotFoundException ex) {
+			System.out.println("Cannot create " + pathname);
+			System.exit(1);
+		}		
+		int i = 0;
+		while(i<names.size()) {
+			output.print(names.get(i) + " \"" + recordNames.get(i) + "\"\n");
+			i++; 
+		}
+		output.close();
+	}
 	public static void recordToday(Scanner in, User temp) {
 		SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yyyy");
 		String date = sdf.format(new Date());
@@ -91,7 +113,6 @@ public class Menu {
 				String l = in.nextLine();
 				String currentMood = in.nextLine();
 				temp.getRecord().setMood(currentMood);
-
 				break;
 
 			case 2:
@@ -173,7 +194,10 @@ public class Menu {
 		int goalTime = in.nextInt();
 		Goal currentGoal = new Goal(goalChoice, goalTime);
 		temp.getRecord().setGoal(currentGoal);
-
+		
+		// SET UP RECORD
+		temp.getRecord().setRecordName(temp.getName() + "Record.txt"); // recordName = nameOfUserRecord.txt
+		
 	}
 
 	public static Record readInRecord(String nameOfFile, String username) {
