@@ -29,23 +29,23 @@ public class Menu {
 		while (inputOfFile.hasNextLine()) { // file should contain one name followed by its record file name on each
 			// line
 			String line = inputOfFile.nextLine();
-			//System.out.print(line);
+			// System.out.print(line);
 			int quoteIndex = line.indexOf("\"");
-			//System.out.print("\n " + quoteIndex);
+			// System.out.print("\n " + quoteIndex);
 			String name = line.substring(0, quoteIndex);
-			String restOfLine = line.substring(quoteIndex + 1); 
+			String restOfLine = line.substring(quoteIndex + 1);
 			int quoteIndex2 = 1 + quoteIndex + restOfLine.indexOf("\"");
-			//System.out.print("\n" + quoteIndex2);
-			String record = restOfLine.substring(0, restOfLine.length()-1);
+			// System.out.print("\n" + quoteIndex2);
+			String record = restOfLine.substring(0, restOfLine.length() - 1);
 			names.add(name);
 			recordFileNames.add(record);
 		}
-		System.out.print("Hello, have you used this program before? (y/n) ");
+		System.out.print("Hello, have you used this program before? (Y/N) ");
 		String response = in.nextLine();
 		String username = "";
 		User temp = null;
-		if (response.equals("y")) {
-			System.out.print("\nWhat is your name? ");
+		if (response.equals("Y")) {
+			System.out.print("What is your name? ");
 			username = in.nextLine();
 			int indexOfUser = 0;
 			for (int t = 0; t < names.size(); t++) {
@@ -67,7 +67,7 @@ public class Menu {
 
 		}
 
-		temp = new User(username);
+		// temp = new User(username);
 		users.add(temp);
 		recordToday(in, temp);
 
@@ -76,63 +76,68 @@ public class Menu {
 	public static void recordToday(Scanner in, User temp) {
 		SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yyyy");
 		String date = sdf.format(new Date());
-		System.out.println(date);
-		System.out.println("Hello, what would you like to record today?");
+		System.out.println("\n" + date);
+		System.out.print("Good day! How are you? ");
+		System.out.println("\nOptions: \n1.Mood\n2.Habit\n3.Goal\n4.Quit");
 		
-		int choice = 0; 
+		int choice = 0;
 		do {
-			System.out.println("Options: \n1.Mood\n2.Habit\n3.Goal\n4.Quit");
-			choice = in.nextInt();
-		switch (choice) {
-		case 1:
-			System.out.print("How are you feeling today? ( :) or :| or :( )");
-			String l = in.nextLine();
-			String currentMood = in.nextLine();
-			temp.getRecord().setMood(currentMood);
 			
-			break;
+			System.out.print("\nWhat would you like to record? ");
+			choice = in.nextInt();
+			switch (choice) {
+			case 1:
+				System.out.print("How are you feeling today? ( :) or :| or :( ) ");
+				String l = in.nextLine();
+				String currentMood = in.nextLine();
+				temp.getRecord().setMood(currentMood);
 
-		case 2:
-			System.out.println("Have you completed " + temp.getRecord().getHabit().getHabitName() + " ? (Y/N)");
-			String answer = in.nextLine();
-			if (answer.equals("Y")) {
-				temp.getRecord().getHabit().recordProgress();
-				if (temp.getRecord().getHabit().finishHabit() == true) {
-					System.out.println("You completed your habit! Good job! ");
-					System.out.println("What habit would you like to work on next?");
-					String habitChoice = in.nextLine();
-					System.out.println("How long do you want to work on your habit?(days)");
-					int habitTime = in.nextInt();
-					Habit currentHabit = new Habit(habitChoice, habitTime);
-					temp.getRecord().setHabit(currentHabit);
+				break;
+
+			case 2:
+				System.out.print("Have you completed " + temp.getRecord().getHabit().getHabitName() + " ? (Y/N) ");
+				String a = in.nextLine();
+				String answer = in.nextLine();
+				if (answer.equals("Y")) {
+					temp.getRecord().getHabit().recordProgress();
+					if (temp.getRecord().getHabit().finishHabit() == true) {
+						System.out.println("You completed your habit! Good job! ");
+						System.out.println("What habit would you like to work on next?");
+						String habitChoice = in.nextLine();
+						System.out.println("How long do you want to work on your habit?(days)");
+						int habitTime = in.nextInt();
+						Habit currentHabit = new Habit(habitChoice, habitTime);
+						temp.getRecord().setHabit(currentHabit);
+					}
+				} else if (answer.equals("N")) {
+					System.out.println("Bad dog! Go work on your habit!");
 				}
-			} else if (answer.equals("N")) {
-				System.out.println("Bad dog! Go work on your habit!");
-			}
-			break;
-		case 3:
-			System.out.println("Have you made progress towards your goal (" + temp.getRecord().getGoal() + ")?");
-			String response = in.nextLine();
-			if (response.equals("Y")) {
-				System.out.println("How many hours did you complete? ");
-				double hours = in.nextDouble();
-				temp.getRecord().getGoal().recordProgress(hours);
-				System.out.print("Any comments on your progress? (Y/N)");
-				String ans = in.nextLine();
-				if (ans.equals("Y")) {
-					System.out.print("Enter your comments: ");
-					String comments = in.nextLine();
-					temp.getRecord().getGoal().addComments(comments);
+				break;
+			case 3:
+				System.out.println("Have you made progress towards your goal (" + temp.getRecord().getGoal().getGoal() + ")? (Y/N) ");
+				String r = in.nextLine();
+				String response = in.nextLine();
+				if (response.equals("Y")) {
+					System.out.println("How many hours did you complete? ");
+					double hours = in.nextDouble();
+					temp.getRecord().getGoal().recordProgress(hours);
+					if(temp.getRecord().getGoal().goalSuccess()==true) {
+						System.out.println("\nGood job! You completed your goal!");
+					}
+					//System.out.print("Any comments on your progress? (Y/N)");
+					/*String ans = in.nextLine();
+					if (ans.equals("Y")) {
+						System.out.print("Enter your comments: ");
+						String comments = in.nextLine();
+						temp.getRecord().getGoal().addComments(comments);
+					}*/
 				}
+				if (response.equals("N")) {
+					System.out.println("Put more effort please!!!");
+				}
+				break;
 			}
-			if (response.equals("N")) {
-				System.out.println("Put more effort please!!!");
-			}
-			break;
-		case 4:
-			break;
-		}
-		}while(choice!=4);
+		} while (choice != 4);
 		temp.getRecord().saveToTextFile();
 
 	}
@@ -193,26 +198,27 @@ public class Menu {
 		while (inputOfFile.hasNextLine()) { // file should contain one name followed by its record file name on each
 											// line
 			String line = inputOfFile.nextLine();
-			System.out.println("line = " + line);
+			//System.out.println("line = " + line);
 			if (line.equals("goals")) {
 				readGoals = true;
 			} else if (line.equals("habits")) {
-				//System.out.print("helloooo");
+				// System.out.print("helloooo");
 				readHabits = true;
 				readGoals = false;
 				readMoods = false;
 			} else if (line.equals("moods")) {
 				readMoods = true;
 				readHabits = false;
-				readGoals = false; 
+				readGoals = false;
 			} else if (readGoals == true) {
-				//System.out.println("readGoals == true!");
+				// System.out.println("readGoals == true!");
 				int commaIndex = line.indexOf(",");
 				String goalName = line.substring(0, commaIndex);
-				int commaIndex2 = commaIndex + 1 + line.substring(commaIndex + 1).indexOf(","); // index of , after first ,
+				int commaIndex2 = commaIndex + 1 + line.substring(commaIndex + 1).indexOf(","); // index of , after
+																								// first ,
 				String goalTime1 = line.substring(commaIndex + 2, commaIndex2);
 				double goalTime = Double.parseDouble(goalTime1);
-				//int commaIndex3 = line.substring(commaIndex2 + 1).indexOf(",");
+				// int commaIndex3 = line.substring(commaIndex2 + 1).indexOf(",");
 				String progress1 = line.substring(commaIndex2 + 2);
 				double progress = Double.parseDouble(progress1);
 				// String time = line.substring(commaIndex2+1, )
@@ -222,11 +228,12 @@ public class Menu {
 			} else if (readHabits == true) {
 				int commaIndex = line.indexOf(",");
 				String habitName = line.substring(0, commaIndex);
-				int commaIndex2 = commaIndex + 1 + line.substring(commaIndex + 1).indexOf(","); // index of , after first ,
+				int commaIndex2 = commaIndex + 1 + line.substring(commaIndex + 1).indexOf(","); // index of , after
+																								// first ,
 				String goalDays1 = line.substring(commaIndex + 2, commaIndex2);
 				int goalDays = Integer.parseInt(goalDays1);
-				//int commaIndex3 = line.substring(commaIndex2 + 1).indexOf(",");
-				//int spaceIndex = line.substring(commaIndex2).indexOf(" ");
+				// int commaIndex3 = line.substring(commaIndex2 + 1).indexOf(",");
+				// int spaceIndex = line.substring(commaIndex2).indexOf(" ");
 				String completedDays1 = line.substring(commaIndex2 + 2);
 				int completedDays = Integer.parseInt(completedDays1);
 				Habit tempH = new Habit(habitName, goalDays, completedDays);
@@ -238,8 +245,8 @@ public class Menu {
 		}
 
 		Record rec = new Record(goals, habits, moods, nameOfFile);
-		
-		rec.printRecord();
+
+		//rec.printRecord();
 
 		return rec;
 

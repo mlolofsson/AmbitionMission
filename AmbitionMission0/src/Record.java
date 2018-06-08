@@ -93,9 +93,16 @@ public class Record {
 		File userListFile = new File(pathname);
 		PrintWriter output = null;
 		Scanner inputOfFile = null;
-		try {
+		/*try {
 			inputOfFile = new Scanner(userListFile);
 		} catch (FileNotFoundException ex) {
+			System.out.println("Cannot create " + pathname);
+			System.exit(1);
+		}*/
+		try {
+			output = new PrintWriter(userListFile);
+		}
+		catch(FileNotFoundException ex) {
 			System.out.println("Cannot create " + pathname);
 			System.exit(1);
 		}
@@ -103,38 +110,54 @@ public class Record {
 		boolean printGoals = false; 
 		boolean printHabits = false; 
 		boolean printMoods = false; 
-		while (inputOfFile.hasNextLine()) { // file should contain one name followed by its record file name on each
+		//System.out.print(GList.size() + " " + HList.size() + " " + MList.size());
+		while (lineIndex<(1+GList.size()+1+HList.size()+1+MList.size())) { // while things still need to be written in the file
+			if(lineIndex==4) {
+				System.out.print(printHabits);
+			}
 			if(lineIndex==1) {
 				output.print("goals");
 				printGoals = true;
+				lineIndex++;
 			}
-			else if(lineIndex == (GList.size() + 1)) {
-				output.print("habits");
+			else if(lineIndex == (GList.size() + 2)) {
+				output.print("\nhabits");
 				printHabits = true; 
+				System.out.print(printHabits + " dfghj");
 				printGoals = false; 
+				printMoods = false; 
+				lineIndex++;
 			}
-			else if(lineIndex == (GList.size() + 1 + HList.size())){
-				output.print("moods");
+			else if(lineIndex == (GList.size() + 2 + HList.size())){
+				output.print("\nmoods");
 				printHabits = false; 
 				printGoals = false; 
 				printMoods = true;
+				lineIndex++;
 			}
 			else if(printGoals==true) {
 				for(Goal g : GList) {
-					output.println(g.getGoal() + ", " + g.getTime() + ", " + g.getProgress());
+					output.print("\n" + g.getGoal() + ", " + g.getTime() + ", " + g.getProgress());
+					lineIndex++;
 				}
 			}
 			else if(printHabits==true) {
+				System.out.print("entered habit loop!");
 				for(Habit h : HList) {
-					output.println(h.getHabitName() + ", " + h.getGoalDays() + ", " + h.getCompleted());
+					output.print("\n" + h.getHabitName() + ", " + h.getGoalDays() + ", " + h.getCompleted());
+					lineIndex++;
 				}
 			}
 			else if(printMoods=true) {
 				for(String m : MList) {
-					output.println(m);
+					output.print("\n" + m);
+					lineIndex++;
 				}
 			}
+			
+			//System.out.print("LineIndex = " + lineIndex);
 		}
+		output.close();
 	}
 
 	

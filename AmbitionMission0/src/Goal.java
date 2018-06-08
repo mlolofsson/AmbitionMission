@@ -42,6 +42,14 @@ public class Goal {
 		return hourProgress; 
 	}
 
+	public boolean goalSuccess() {
+		if(hourProgress>=goalTime) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	public void printGoal() {
 		System.out.print("goalName = " + goalName);
 		System.out.print(" goalTime = " + goalTime);
