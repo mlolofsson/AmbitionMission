@@ -45,8 +45,8 @@ public class Habit {
 	}
 	public void printHabit() {
 		System.out.print("habitName = " + habitName);
-		System.out.print(" goalDays = " + goalDays);
-		System.out.print(" completeDays = " + completeDays);
+		System.out.print(", goalDays = " + goalDays);
+		System.out.print(", completeDays = " + completeDays);
 	}
 	
 

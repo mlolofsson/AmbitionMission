@@ -52,7 +52,7 @@ public class Goal {
 	}
 	public void printGoal() {
 		System.out.print("goalName = " + goalName);
-		System.out.print(" goalTime = " + goalTime);
-		System.out.print(" hourProgress = " + hourProgress);
+		System.out.print(", goalTime = " + goalTime);
+		System.out.print(", hourProgress = " + hourProgress);
 	}
 }

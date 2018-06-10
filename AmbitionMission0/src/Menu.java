@@ -31,6 +31,7 @@ public class Menu {
 			String line = inputOfFile.nextLine();
 			int quoteIndex = line.indexOf("\"");
 			String name = line.substring(0, quoteIndex);
+			name = name.trim();
 			String restOfLine = line.substring(quoteIndex + 1);
 			int quoteIndex2 = 1 + quoteIndex + restOfLine.indexOf("\"");
 			String record = restOfLine.substring(0, restOfLine.length() - 1);
@@ -45,14 +46,22 @@ public class Menu {
 			System.out.print("What is your name? ");
 			username = in.nextLine();
 			int indexOfUser = 0;
+			boolean flag = false; // true if found 
 			for (int t = 0; t < names.size(); t++) {
 				if (names.get(t).equals(username)) {
 					indexOfUser = t;
+					flag = true; 
 				}
 			}
+			if(flag) {
 			String recordName = recordFileNames.get(indexOfUser);
 			Record rec = readInRecord(recordName, username);
 			temp = new User(username, rec);
+			}
+			else {
+				System.out.print(username + " is not an existing username.");
+				System.exit(1);
+			}
 		} else {
 			System.out.print("What is your name? ");
 			username = in.nextLine();
@@ -66,6 +75,7 @@ public class Menu {
 		saveUserList(names, recordFileNames);
 		// temp = new User(username);
 		users.add(temp);
+		printUserRecord(temp);
 		recordToday(in, temp);
 
 	}
@@ -135,7 +145,7 @@ public class Menu {
 				}
 				break;
 			case 3:
-				System.out.println("Have you made progress towards your goal (" + temp.getRecord().getGoal().getGoal() + ")? (Y/N) ");
+				System.out.print("Have you made progress towards your goal (" + temp.getRecord().getGoal().getGoal() + ")? (Y/N) ");
 				String r = in.nextLine();
 				String response = in.nextLine();
 				if (response.equals("Y")) {
@@ -143,7 +153,14 @@ public class Menu {
 					double hours = in.nextDouble();
 					temp.getRecord().getGoal().recordProgress(hours);
 					if(temp.getRecord().getGoal().goalSuccess()==true) {
-						System.out.println("\nGood job! You completed your goal!");
+						System.out.print("\nGood job! You completed your goal!");
+						System.out.print("You now have to choose a new goal to work on. What'll it be? ");
+						String t = in.nextLine();
+						String goalChoice = in.nextLine();
+						System.out.print("How many hours do you want to work on your goal? ");
+						int goalTime = in.nextInt();
+						Goal currentGoal = new Goal(goalChoice, goalTime);
+						temp.getRecord().setGoal(currentGoal);
 					}
 					//System.out.print("Any comments on your progress? (Y/N)");
 					/*String ans = in.nextLine();
@@ -274,5 +291,9 @@ public class Menu {
 
 		return rec;
 
+	}
+	
+	public static void printUserRecord(User temp) {
+		temp.getRecord().printRecord();	
 	}
 }

@@ -1,0 +1,13 @@
+goals
+skateboarding, 65.0, 74.0
+Pokemon, 78.0, 0.0
+habits
+climb a tree, 87, 9
+moods
+:)
+:(
+:)
+:)
+:)
+:)
+:)

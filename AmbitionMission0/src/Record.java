@@ -71,13 +71,12 @@ public class Record {
 	public void printRecord(){
 		System.out.println("Mood Data:");
 		System.out.println(MList);
-		System.out.println("Habit Data");
+		System.out.println("Habit Data:");
 		for(Habit h: HList) {
 			h.printHabit();
 			System.out.print("\n");
 		}
-		System.out.println("Goal Data");
-		System.out.println("GList");
+		System.out.println("Goal Data:");
 		for(Goal g: GList) {
 			g.printGoal();
 			System.out.print("\n");
