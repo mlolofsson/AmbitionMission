@@ -1,0 +1,11 @@
+goals
+eat pizza, 65.0, 10.0
+habits
+run, 87, 8
+moods
+:)
+:(
+:)
+:)
+:)
+:)

@@ -3,17 +3,12 @@ import java.util.ArrayList;
 public class User {
 
 	private String name;
-	private Record userRecord; 
+	private Record currentRecord; 
+	private ArrayList<Record> allRecords;
 	
-
-	public User(String name){
-		this.name = name;
-		this.userRecord = new Record(); 
-	}
-	
-	public User(String name, Record x) { // constructor if user already exists 
+	public User(String name, ArrayList<Record> x) { // constructor if user already exists 
 		this.name = name; 
-		this.userRecord = x; 
+		this.allRecords = x; 
 	}
 
 	public String getName(){
@@ -21,9 +16,20 @@ public class User {
 	}
 	
 	public Record getRecord() {
-		return userRecord; 
+		return currentRecord; 
 	}
 	
+	public ArrayList<Record> getAllRecords(){
+		return allRecords;
+	}
+	
+	public void setCurrentRec(int month) {
+		currentRecord = allRecords.get(month);
+	}
+	
+	public String getRecordName(int month) {
+		return name + "Record" + month + ".txt";
+	}
 }
 
 

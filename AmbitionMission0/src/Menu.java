@@ -11,6 +11,11 @@ public class Menu {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+
+		// SET DATE
+		Date curDate = new Date();
+		int month = 10;//curDate.getMonth(); // month is 1 less than should be
+
 		Scanner in = new Scanner(System.in);
 		// CREATE FILE THAT STORES USERS
 		ArrayList<User> users = new ArrayList<>();
@@ -20,6 +25,7 @@ public class Menu {
 		File userListFile = new File(pathname);
 		PrintWriter output = null;
 		Scanner inputOfFile = null;
+		User temp = null;
 		try {
 			inputOfFile = new Scanner(userListFile);
 		} catch (FileNotFoundException ex) {
@@ -28,37 +34,38 @@ public class Menu {
 		}
 		while (inputOfFile.hasNextLine()) { // file should contain one name followed by its record file name on each
 			// line
-			String line = inputOfFile.nextLine();
-			int quoteIndex = line.indexOf("\"");
-			String name = line.substring(0, quoteIndex);
+			String name = inputOfFile.nextLine();
 			name = name.trim();
-			String restOfLine = line.substring(quoteIndex + 1);
-			int quoteIndex2 = 1 + quoteIndex + restOfLine.indexOf("\"");
-			String record = restOfLine.substring(0, restOfLine.length() - 1);
+			ArrayList<String> recordNames = new ArrayList<String>();
+			ArrayList<Record> records = new ArrayList<Record>();
+			for (int i = 0; i < 12; i++) {
+				String recordFile = name + "Record" + i + ".txt";
+				recordNames.add(recordFile);
+				
+				records.add(readInRecord(recordFile, name)); // set record to proper text file
+			}
+			temp = new User(name, records);
+			users.add(temp);
 			names.add(name);
-			recordFileNames.add(record);
 		}
+
+		// GET USER INFORMATION
 		System.out.print("Hello, have you used this program before? (Y/N) ");
 		String response = in.nextLine();
 		String username = "";
-		User temp = null;
+
 		if (response.equals("Y")) {
 			System.out.print("What is your name? ");
 			username = in.nextLine();
 			int indexOfUser = 0;
-			boolean flag = false; // true if found 
+			boolean flag = false; // true if found
 			for (int t = 0; t < names.size(); t++) {
 				if (names.get(t).equals(username)) {
 					indexOfUser = t;
-					flag = true; 
+					flag = true;
 				}
 			}
-			if(flag) {
-			String recordName = recordFileNames.get(indexOfUser);
-			Record rec = readInRecord(recordName, username);
-			temp = new User(username, rec);
-			}
-			else {
+			if (!flag) {
 				System.out.print(username + " is not an existing username.");
 				System.exit(1);
 			}
@@ -66,55 +73,88 @@ public class Menu {
 			System.out.print("What is your name? ");
 			username = in.nextLine();
 			names.add(username);
-			String recName = username + "Record.txt";
-			recordFileNames.add(recName);
-			temp = new User(username);
+			ArrayList<String> recNames = new ArrayList<String>();
+			ArrayList<Record> recs = new ArrayList<Record>();
+			String temp2 = null;
+			for (int i = 0; i < 12; i++) { // set record names
+				temp2 = username + "Record" + i + ".txt";
+				recNames.add(i, temp2);
+				recs.add(new Record(temp2));
+			}
+			// recordFileNames.add(recName);
+			temp = new User(username, recs);
 			setUpNewUser(in, temp);
 
 		}
-		saveUserList(names, recordFileNames);
+
 		// temp = new User(username);
-		users.add(temp);
-		printUserRecord(temp);
-		recordToday(in, temp);
+		saveUserList(names, users);
+		temp.setCurrentRec(month); // set the current record to the record of the current month
+		//printUserRecord(temp);
+		options(in, temp);
 
 	}
 
-	public static void saveUserList(ArrayList<String> names, ArrayList<String> recordNames) {
+	public static void options(Scanner in, User temp) {
+		System.out.println("\nProgram options: ");
+		System.out.println("1. Record today's data");
+		System.out.println("2. View month's progress");
+		System.out.print("3. Quit");
+
+		int choice = 0;
+		do {
+			System.out.print("\nPick a number: ");
+			choice = in.nextInt();
+			switch (choice) {
+			case 1:
+				recordToday(in, temp);
+				break;
+			case 2:
+				displayMonthProgress(in, temp);
+				break; 
+			}
+		} while (choice != 3);
+	}
+
+	public static void saveUserList(ArrayList<String> names, ArrayList<User> users) {
 		String pathname = "UserList.txt";
 		File userListFile = new File(pathname);
 		PrintWriter output = null;
 		Scanner inputOfFile = null;
-		/*try {
-			inputOfFile = new Scanner(userListFile);
+		/*
+		 * try { inputOfFile = new Scanner(userListFile); } catch (FileNotFoundException
+		 * ex) { System.out.println("Cannot create " + pathname); System.exit(1); }
+		 */
+		try {
+			output = new PrintWriter(userListFile);
 		} catch (FileNotFoundException ex) {
 			System.out.println("Cannot create " + pathname);
 			System.exit(1);
-		}*/
-		try {
-			output = new PrintWriter(userListFile);
 		}
-		catch(FileNotFoundException ex) {
-			System.out.println("Cannot create " + pathname);
-			System.exit(1);
-		}		
 		int i = 0;
-		while(i<names.size()) {
-			output.print(names.get(i) + " \"" + recordNames.get(i) + "\"\n");
-			i++; 
+		while (i < names.size()) {
+			output.print(names.get(i));
+			i++;
 		}
 		output.close();
 	}
+
 	public static void recordToday(Scanner in, User temp) {
+		Date curDate = new Date();
+		int month = 10; // month is 1 less than should be
 		SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yyyy");
-		String date = sdf.format(new Date());
+		String date = sdf.format(curDate);
 		System.out.println("\n" + date);
 		System.out.print("Good day! How are you? ");
 		System.out.println("\nOptions: \n1.Mood\n2.Habit\n3.Goal\n4.Quit");
-		
+
+		temp.setCurrentRec(month); // set the current record to the record of the current month
+		if (temp.getRecord().getGoal() == null || temp.getRecord().getHabit() == null) { // if it is a new month
+			rollOver(month, temp);
+		}
 		int choice = 0;
 		do {
-			
+
 			System.out.print("\nWhat would you like to record? ");
 			choice = in.nextInt();
 			switch (choice) {
@@ -145,14 +185,15 @@ public class Menu {
 				}
 				break;
 			case 3:
-				System.out.print("Have you made progress towards your goal (" + temp.getRecord().getGoal().getGoal() + ")? (Y/N) ");
+				System.out.print("Have you made progress towards your goal (" + temp.getRecord().getGoal().getGoal()
+						+ ")? (Y/N) ");
 				String r = in.nextLine();
 				String response = in.nextLine();
 				if (response.equals("Y")) {
 					System.out.println("How many hours did you complete? ");
 					double hours = in.nextDouble();
 					temp.getRecord().getGoal().recordProgress(hours);
-					if(temp.getRecord().getGoal().goalSuccess()==true) {
+					if (temp.getRecord().getGoal().goalSuccess() == true) {
 						System.out.print("\nGood job! You completed your goal!");
 						System.out.print("You now have to choose a new goal to work on. What'll it be? ");
 						String t = in.nextLine();
@@ -162,13 +203,12 @@ public class Menu {
 						Goal currentGoal = new Goal(goalChoice, goalTime);
 						temp.getRecord().setGoal(currentGoal);
 					}
-					//System.out.print("Any comments on your progress? (Y/N)");
-					/*String ans = in.nextLine();
-					if (ans.equals("Y")) {
-						System.out.print("Enter your comments: ");
-						String comments = in.nextLine();
-						temp.getRecord().getGoal().addComments(comments);
-					}*/
+					// System.out.print("Any comments on your progress? (Y/N)");
+					/*
+					 * String ans = in.nextLine(); if (ans.equals("Y")) {
+					 * System.out.print("Enter your comments: "); String comments = in.nextLine();
+					 * temp.getRecord().getGoal().addComments(comments); }
+					 */
 				}
 				if (response.equals("N")) {
 					System.out.println("Put more effort please!!!");
@@ -180,17 +220,23 @@ public class Menu {
 
 	}
 
-	public static void displayMonthProgress(User temp, int firstDay, int lastDay) {
-		// DISPLAY MOOD
-
-		// DISPLAY HABIT
-
-		// DISPLAY GOAL
-		ArrayList<Goal> tempGoal = temp.getRecord().getGoalList();
-		for (int i = firstDay; i < lastDay; i++) {
-			double timeProgress = tempGoal.get(i).getProgress();
-			System.out.println("\nGoal (" + tempGoal.get(i).getGoal() + ") : ");
-			System.out.println(timeProgress + " hours out of " + tempGoal.get(i).getTime() + " completed.");
+	public static void displayMonthProgress(Scanner in, User temp) {
+		System.out.print("\nWhich month would you like to see (enter the integer)? "); 
+		int month = in.nextInt(); 
+		System.out.println("\nMonth " + month + " summary: ");
+		String pathname = temp.getAllRecords().get(month-1).getName();
+		File recordFile = new File(pathname);
+		Scanner inputOfFile = null;
+		try {
+			inputOfFile = new Scanner(recordFile);
+		} catch (FileNotFoundException ex) {
+			System.out.println("Cannot create " + pathname);
+			System.exit(1);
+		}
+	
+		while (inputOfFile.hasNextLine()) {
+			String line = inputOfFile.nextLine();
+			System.out.print(line + "\n");
 		}
 	}
 
@@ -211,13 +257,24 @@ public class Menu {
 		int goalTime = in.nextInt();
 		Goal currentGoal = new Goal(goalChoice, goalTime);
 		temp.getRecord().setGoal(currentGoal);
-		
+
 		// SET UP RECORD
 		temp.getRecord().setRecordName(temp.getName() + "Record.txt"); // recordName = nameOfUserRecord.txt
-		
+
+	}
+
+	public static void rollOver(int currentMonth, User user) { // puts current goal and habit of previous month into
+																// current month
+		Habit lastMonthH = user.getAllRecords().get(currentMonth - 1).getHabit();
+		user.getRecord().setHabit(lastMonthH); // set the user's first habit of this month as the last habit of the last
+												// month
+		Goal lastMonthG = user.getAllRecords().get(currentMonth - 1).getGoal();
+		user.getRecord().setGoal(lastMonthG); // set the user's first goal of this month as the last goal of the last
+												// month
 	}
 
 	public static Record readInRecord(String nameOfFile, String username) {
+		//System.out.print(nameOfFile);
 		ArrayList<Goal> goals = new ArrayList<Goal>();
 		ArrayList<Habit> habits = new ArrayList<Habit>();
 		ArrayList<String> moods = new ArrayList<String>();
@@ -236,10 +293,15 @@ public class Menu {
 		boolean readGoals = false;
 		boolean readHabits = false;
 		boolean readMoods = false;
+		Record rec; 
 		while (inputOfFile.hasNextLine()) { // file should contain one name followed by its record file name on each
 											// line
 			String line = inputOfFile.nextLine();
-			//System.out.println("line = " + line);
+			//System.out.print(line + " line num = " + lineNum);
+			if(!line.isEmpty()) {
+				lineNum++; 
+			}
+			// System.out.println("line = " + line);
 			if (line.equals("goals")) {
 				readGoals = true;
 			} else if (line.equals("habits")) {
@@ -284,16 +346,21 @@ public class Menu {
 				moods.add(mood);
 			}
 		}
+		//System.out.print(" " + lineNum);
+		if(lineNum==0) { // if file is empty 
+			rec = new Record(nameOfFile);
+		}
+		else {
+		rec = new Record(goals, habits, moods, nameOfFile);
+		}
 
-		Record rec = new Record(goals, habits, moods, nameOfFile);
-
-		//rec.printRecord();
+		// rec.printRecord();
 
 		return rec;
 
 	}
-	
+
 	public static void printUserRecord(User temp) {
-		temp.getRecord().printRecord();	
+		temp.getRecord().printRecord();
 	}
 }

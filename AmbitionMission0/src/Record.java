@@ -11,13 +11,14 @@ public class Record {
 	private ArrayList<String> MList;
 	private Habit currentHabit;
 	private Goal currentGoal; 
-	private Record userRecord;
+	//private Record userRecord;
 	private String recordName;
 
-	public Record(){
+	public Record(String fileName){
 		GList = new ArrayList<Goal>();
 		HList = new ArrayList<Habit>();
 		MList = new ArrayList<String>();
+		recordName = fileName;
 	}
 	
 	public Record(ArrayList<Goal> GList, ArrayList<Habit> HList, ArrayList<String> MList, String recordName) { // constructor if record already exists
@@ -31,6 +32,17 @@ public class Record {
 		
 	}
 
+	public boolean isEmpty() {
+		if(GList.isEmpty()) {
+			return true; 
+		}
+		else {
+			return false; 
+		}
+	}
+	public String getName() {
+		return recordName; 
+	}
 	public void setMood(String dailyMood){
 		MList.add(dailyMood);	
 	}
