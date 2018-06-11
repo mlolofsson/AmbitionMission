@@ -77,7 +77,8 @@ public class Menu {
 			String temp2 = null;
 			for (int i = 0; i < 12; i++) { // set record names
 				temp2 = username + "Record" + i + ".txt";
-				recNames.add(i, temp2);
+				///System.out.print(temp2);
+				recNames.add(temp2);
 				recs.add(new Record(temp2));
 			}
 			// recordFileNames.add(recName);
@@ -89,10 +90,15 @@ public class Menu {
 
 		// temp = new User(username);
 		saveUserList(names, users);
+		for(int i=0; i<12; i++) { // save all records to text files 
+			temp.getAllRecords().get(i).saveToTextFile();
+		}
 		temp.setCurrentRec(month); // set the current record to the record of the current month
 		//printUserRecord(temp);
 		options(in, temp);
-
+		for(int i=0; i<12; i++) { // save all records to text files 
+			temp.getAllRecords().get(i).saveToTextFile();
+		}
 	}
 
 	public static void options(Scanner in, User temp) {
