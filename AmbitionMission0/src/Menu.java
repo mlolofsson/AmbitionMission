@@ -83,6 +83,7 @@ public class Menu {
 			}
 			// recordFileNames.add(recName);
 			temp = new User(username, recs);
+			temp.setCurrentRec(month);
 			setUpNewUser(in, temp);
 
 		}
@@ -224,7 +225,7 @@ public class Menu {
 		System.out.print("\nWhich month would you like to see (enter the integer)? "); 
 		int month = in.nextInt(); 
 		System.out.println("\nMonth " + month + " summary: ");
-		String pathname = temp.getAllRecords().get(month).getName();
+		String pathname = temp.getAllRecords().get(month-1).getName();
 		File recordFile = new File(pathname);
 		Scanner inputOfFile = null;
 		try {
@@ -242,9 +243,9 @@ public class Menu {
 
 	public static void setUpNewUser(Scanner in, User temp) {
 		// SET UP HABIT
-		System.out.println("What habit would you like to work on?");
+		System.out.print("What habit would you like to work on?");
 		String habitChoice = in.nextLine();
-		System.out.println("How long do you want to work on your habit?(days)");
+		System.out.print("How long do you want to work on your habit?(days)");
 		int habitTime = in.nextInt();
 		Habit currentHabit = new Habit(habitChoice, habitTime);
 		temp.getRecord().setHabit(currentHabit);
