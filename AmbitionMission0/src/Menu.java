@@ -14,7 +14,7 @@ public class Menu {
 
 		// SET DATE
 		Date curDate = new Date();
-		int month = 10;//curDate.getMonth(); // month is 1 less than should be
+		int month = curDate.getMonth(); // month is 1 less than should be
 
 		Scanner in = new Scanner(System.in);
 		// CREATE FILE THAT STORES USERS
@@ -141,7 +141,7 @@ public class Menu {
 
 	public static void recordToday(Scanner in, User temp) {
 		Date curDate = new Date();
-		int month = 10; // month is 1 less than should be
+		int month = curDate.getMonth(); // month is 1 less than should be
 		SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yyyy");
 		String date = sdf.format(curDate);
 		System.out.println("\n" + date);
