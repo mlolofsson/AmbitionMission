@@ -41,7 +41,6 @@ public class Menu {
 			for (int i = 0; i < 12; i++) {
 				String recordFile = name + "Record" + i + ".txt";
 				recordNames.add(recordFile);
-				
 				records.add(readInRecord(recordFile, name)); // set record to proper text file
 			}
 			temp = new User(name, records);
@@ -134,7 +133,7 @@ public class Menu {
 		}
 		int i = 0;
 		while (i < names.size()) {
-			output.print(names.get(i));
+			output.print(names.get(i) + "\n");
 			i++;
 		}
 		output.close();
@@ -174,9 +173,9 @@ public class Menu {
 					temp.getRecord().getHabit().recordProgress();
 					if (temp.getRecord().getHabit().finishHabit() == true) {
 						System.out.println("You completed your habit! Good job! ");
-						System.out.println("What habit would you like to work on next?");
+						System.out.println("What habit would you like to work on next? ");
 						String habitChoice = in.nextLine();
-						System.out.println("How long do you want to work on your habit?(days)");
+						System.out.println("How long do you want to work on your habit?(days) ");
 						int habitTime = in.nextInt();
 						Habit currentHabit = new Habit(habitChoice, habitTime);
 						temp.getRecord().setHabit(currentHabit);
@@ -191,7 +190,7 @@ public class Menu {
 				String r = in.nextLine();
 				String response = in.nextLine();
 				if (response.equals("Y")) {
-					System.out.println("How many hours did you complete? ");
+					System.out.print("How many hours did you complete? ");
 					double hours = in.nextDouble();
 					temp.getRecord().getGoal().recordProgress(hours);
 					if (temp.getRecord().getGoal().goalSuccess() == true) {
@@ -243,18 +242,18 @@ public class Menu {
 
 	public static void setUpNewUser(Scanner in, User temp) {
 		// SET UP HABIT
-		System.out.print("What habit would you like to work on?");
+		System.out.print("What habit would you like to work on? ");
 		String habitChoice = in.nextLine();
-		System.out.print("How long do you want to work on your habit?(days)");
+		System.out.print("How long do you want to work on your habit?(days) ");
 		int habitTime = in.nextInt();
 		Habit currentHabit = new Habit(habitChoice, habitTime);
 		temp.getRecord().setHabit(currentHabit);
 
 		// SET UP GOAL
-		System.out.println("What goal would you like to work on?");
+		System.out.print("What goal would you like to work on?");
 		String t = in.nextLine();
 		String goalChoice = in.nextLine();
-		System.out.println("How many hours do you want to work on your goal?");
+		System.out.print("How many hours do you want to work on your goal?");
 		int goalTime = in.nextInt();
 		Goal currentGoal = new Goal(goalChoice, goalTime);
 		temp.getRecord().setGoal(currentGoal);
