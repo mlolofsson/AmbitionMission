@@ -224,7 +224,7 @@ public class Menu {
 		System.out.print("\nWhich month would you like to see (enter the integer)? "); 
 		int month = in.nextInt(); 
 		System.out.println("\nMonth " + month + " summary: ");
-		String pathname = temp.getAllRecords().get(month-1).getName();
+		String pathname = temp.getAllRecords().get(month).getName();
 		File recordFile = new File(pathname);
 		Scanner inputOfFile = null;
 		try {
