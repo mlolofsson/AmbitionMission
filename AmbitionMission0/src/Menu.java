@@ -43,8 +43,8 @@ public class Menu {
 				recordNames.add(recordFile);
 				records.add(readInRecord(recordFile, name)); // set record to proper text file
 			}
-			temp = new User(name, records);
-			users.add(temp);
+			User t = new User(name, records);
+			users.add(t);
 			names.add(name);
 		}
 
@@ -61,6 +61,7 @@ public class Menu {
 			for (int t = 0; t < names.size(); t++) {
 				if (names.get(t).equals(username)) {
 					indexOfUser = t;
+					temp = users.get(t);
 					flag = true;
 				}
 			}
@@ -265,7 +266,10 @@ public class Menu {
 		temp.getRecord().setGoal(currentGoal);
 
 		// SET UP RECORD
-		temp.getRecord().setRecordName(temp.getName() + "Record.txt"); // recordName = nameOfUserRecord.txt
+		
+		//	temp.getRecord().setRecordName(temp.getName() + "Record" + ".txt"); // recordName = nameOfUserRecord.txt
+		
+		
 
 	}
 
@@ -370,3 +374,5 @@ public class Menu {
 		temp.getRecord().printRecord();
 	}
 }
+
+
