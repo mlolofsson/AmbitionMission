@@ -120,6 +120,10 @@ public class Menu {
 				displayMonthProgress(in, temp);
 				break; 
 			}
+			System.out.println("\nProgram options: ");
+			System.out.println("1. Record today's data");
+			System.out.println("2. View month's progress");
+			System.out.print("3. Quit");
 		} while (choice != 3);
 	}
 
